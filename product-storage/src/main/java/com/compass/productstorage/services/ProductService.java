@@ -1,5 +1,7 @@
 package com.compass.productstorage.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.compass.productstorage.model.ProductModel;
@@ -18,4 +20,9 @@ public class ProductService {
 	public ProductModel register(ProductModel product) {
 		return this.productRepository.save(product);
 	}
+
+	public Page<ProductModel> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
 }
