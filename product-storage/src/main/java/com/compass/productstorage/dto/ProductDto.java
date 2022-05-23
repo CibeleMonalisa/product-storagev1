@@ -1,8 +1,13 @@
 package com.compass.productstorage.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotBlank;
 
-import com.compass.productstorage.model.ProductModel;
+import org.springframework.data.domain.Page;
+
+import com.compass.productstorage.model.Product;
 
 public class ProductDto {
 	@NotBlank
@@ -13,7 +18,7 @@ public class ProductDto {
 	@NotBlank
 	private double price;
 
-	public ProductDto(ProductModel product) {
+	public ProductDto(Product product) {
 		this.id = product.getId();
 		this.name = product.getName();
 		this.description = product.getDescription();
@@ -35,5 +40,14 @@ public class ProductDto {
 	public double getPrice() {
 		return price;
 	}
+
+	public static List<ProductDto> convertToList(List<Product> products) {
+		return products.stream().map(ProductDto::new).collect(Collectors.toList());
+
+		}
+	
+	public static Page<ProductDto> convertToPage(Page<Product> products){
+		return products.map(ProductDto::new);
+		}
 
 }

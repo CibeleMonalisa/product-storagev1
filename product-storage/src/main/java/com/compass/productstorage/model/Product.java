@@ -4,17 +4,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_PRODUCTS")
-public class ProductModel {
+public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	private String description;
 	private double price;
+	
+	public Product() {
+		
+	}
+	
+	public Product(String name, String description, double price) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+
 	public int getId() {
 		return id;
 	}
