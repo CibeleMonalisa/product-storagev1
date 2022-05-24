@@ -36,6 +36,7 @@ public class ProductController {
 	@PostMapping
 
 	@Transactional
+
 	public ResponseEntity<ProductDto> registerProduct(@RequestBody ProductForm productForm, UriComponentsBuilder uriBuilder){
 	return productService.registerProduct(productForm, uriBuilder);
 	}
