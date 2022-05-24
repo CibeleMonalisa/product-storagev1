@@ -3,7 +3,7 @@ package com.compass.productstorage.Form;
 import com.compass.productstorage.entitie.Product;
 import com.compass.productstorage.repository.ProductRepository;
 
-public class ProductUp {
+public class ProductUpdateForm {
     private String name;
     private String description;
     private double price;
@@ -33,7 +33,7 @@ public class ProductUp {
     }
 
     public Product update(int id, ProductRepository productRepository) {
-        Product product = productRepository.getById(id);
+        Product product = productRepository.getReferenceById(id); //getById() caiu em desuso, substituição por getReferenceById() 
         product.setDescription(this.description);
         product.setName(this.name);
         product.setPrice(this.price);
