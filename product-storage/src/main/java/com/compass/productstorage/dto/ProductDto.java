@@ -7,9 +7,9 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.domain.Page;
 
-import com.compass.productstorage.model.Product;
+import com.compass.productstorage.entitie.Product;
 
-public class ProductDto {
+public class ProductDto extends Product {
 	@NotBlank
 	private int id;
 	@NotBlank
@@ -23,6 +23,9 @@ public class ProductDto {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
+	}
+
+	public ProductDto() {
 	}
 
 	public int getId() {
