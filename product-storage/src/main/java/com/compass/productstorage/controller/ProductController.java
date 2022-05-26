@@ -53,13 +53,10 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
 	}
 
-	// SELECT BY ID
+	// GET BY ID
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDto> findById(@PathVariable int id) {
 		Optional<Product> productOptional = productService.findById(id);
-		if (!productOptional.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok(new ProductDto(productOptional.get()));
 	}
 
@@ -67,25 +64,19 @@ public class ProductController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable int id) {
 		Optional<Product> productDtoOptional = productService.findById(id);
-
-		if (!productDtoOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
-		}
 		productService.delete(productDtoOptional.get());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto deletado com sucesso");
-
 	}
 
 	// UPDATE BY ID
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<Product> update(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
-		Optional<Product> optional = productRepository.findById(id);
-		if (optional.isPresent()) {
-			Product product = form.updateForm(id, productRepository);
+	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
+			productService.findById(id);
+			var product = new Product();
+			BeanUtils.copyProperties(form, product);
+			product = form.updateForm(id, productRepository);
 			return ResponseEntity.ok(new ProductDto(product));
-		}
-		return ResponseEntity.notFound().build();
 	}
 
 	// SELECT ALL
