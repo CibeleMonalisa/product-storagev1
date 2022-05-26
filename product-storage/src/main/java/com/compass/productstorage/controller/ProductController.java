@@ -32,7 +32,7 @@ import com.compass.productstorage.repository.ProductRepository;
 import com.compass.productstorage.services.ProductServiceImp;
 
 @RestController
-@RequestMapping("/product-storage")
+@RequestMapping("/products")
 public class ProductController {
 
 	@Autowired
@@ -49,9 +49,9 @@ public class ProductController {
 	@Transactional
 	public ResponseEntity<Object> create(@RequestBody ProductForm form) {
 		var product = new Product();
-		BeanUtils.copyProperties(form, product); //converting a Form to Entity
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
-    }
+		BeanUtils.copyProperties(form, product); // converting a Form to Entity
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
+	}
 
 	// SELECT BY ID
 	@GetMapping("/{id}")
@@ -102,5 +102,4 @@ public class ProductController {
 			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q) {
 		return productService.search(maxPricedb, minPricedb, q);
 	}
-
 }

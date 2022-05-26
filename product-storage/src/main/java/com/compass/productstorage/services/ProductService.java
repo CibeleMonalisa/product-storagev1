@@ -13,20 +13,21 @@ import com.compass.productstorage.dto.ProductDto;
 import com.compass.productstorage.entity.Product;
 
 public interface ProductService {
-	
-	//REGISTER
-	Product save(Product product);
-	
-	//DELET BY ID
-	void delete(Product productDto);
-	
-	//SELECT BY ID
-	Optional<Product> findById(int id);
-	
-	//SELECT ALL METHOD
-	Page<Product> list(@PageableDefault
-			(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
 
+	// REGISTER METHOD
+	Product save(Product product);
+
+	// DELET BY ID METHOD
+	void delete(Product productDto);
+
+	// SELECT BY ID METHOD
+	Optional<Product> findById(int id);
+
+	// SELECT ALL METHOD
+	Page<Product> list(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
+
+	// SEARCH METHOD
 	List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
 			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q);
 }

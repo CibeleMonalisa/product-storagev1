@@ -12,7 +12,6 @@ import com.compass.productstorage.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-	//QUERY FOR MAX PRICE, MIN PRICE, NAME
 	@Query(value = "SELECT * FROM Product WHERE (:q IS NULL OR (UPPER(name) LIKE UPPER(CONCAT('%', :q, '%'))"
 			+ "OR UPPER(description) LIKE UPPER(CONCAT('%', :q, '%'))))"
 			+ "AND (:min_price IS NULL OR price >= :min_price)"
