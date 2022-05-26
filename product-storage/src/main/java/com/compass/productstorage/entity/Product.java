@@ -1,4 +1,4 @@
-package com.compass.productstorage.entitie;
+package com.compass.productstorage.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

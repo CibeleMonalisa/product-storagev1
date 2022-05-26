@@ -5,43 +5,28 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.compass.productstorage.dto.ProductDto;
-import com.compass.productstorage.entitie.Product;
-import com.compass.productstorage.repository.ProductRepository;
+import com.compass.productstorage.entity.Product;
 
-@Service
-public class ProductService {
-
-	final ProductRepository productRepository;
-
-	public ProductService(ProductRepository productRepository) {
-		this.productRepository = productRepository;
-	}
-
-	// REGISTER
-	public Product register(Product product) {
-		return this.productRepository.save(product);
-	}
-
-	public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
-
-	//SELECT ALL
-	public List<ProductDto> list() {
-		List<Product> product = productRepository.findAll(); 
-		return ProductDto.convertToList(product);
-	}
-
+public interface ProductService {
+	
+	//REGISTER
+	Product save(Product product);
+	
+	//DELET BY ID
+	void delete(Product productDto);
+	
 	//SELECT BY ID
-	public Optional<Product> findById(int id){return productRepository.findById(id);}
+	Optional<Product> findById(int id);
+	
+	//SELECT ALL METHOD
+	Page<Product> list(@PageableDefault
+			(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
 
-	//DELETE BY ID
-	public void delete(Product productDto){
-		productRepository.delete(productDto);
-
-	}
-
+	List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
+			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q);
 }

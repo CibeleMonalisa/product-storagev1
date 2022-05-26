@@ -1,6 +1,6 @@
 package com.compass.productstorage.Form;
 
-import com.compass.productstorage.entitie.Product;
+import com.compass.productstorage.entity.Product;
 import com.compass.productstorage.repository.ProductRepository;
 
 public class ProductForm {

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.domain.Page;
 
-import com.compass.productstorage.entitie.Product;
+import com.compass.productstorage.entity.Product;
 
 public class ProductDto extends Product {
 	@NotBlank

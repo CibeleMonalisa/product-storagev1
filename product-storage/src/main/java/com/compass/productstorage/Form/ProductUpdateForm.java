@@ -1,6 +1,6 @@
 package com.compass.productstorage.Form;
 
-import com.compass.productstorage.entitie.Product;
+import com.compass.productstorage.entity.Product;
 import com.compass.productstorage.repository.ProductRepository;
 
 public class ProductUpdateForm {
@@ -32,7 +32,7 @@ public class ProductUpdateForm {
         this.price = price;
     }
 
-    public Product update(int id, ProductRepository productRepository) {
+    public Product updateForm(int id, ProductRepository productRepository) {
         Product product = productRepository.getReferenceById(id); //getById() caiu em desuso, substituição por getReferenceById() 
         product.setDescription(this.description);
         product.setName(this.name);

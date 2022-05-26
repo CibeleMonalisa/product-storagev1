@@ -1,24 +1,35 @@
 package com.compass.productstorage.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import com.compass.productstorage.entitie.Product;
-import com.compass.productstorage.Form.ProductForm;
-import com.compass.productstorage.Form.ProductUpdateForm;
-import com.compass.productstorage.repository.ProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.compass.productstorage.Form.ProductForm;
+import com.compass.productstorage.Form.ProductUpdateForm;
 import com.compass.productstorage.dto.ProductDto;
-import com.compass.productstorage.services.ProductService;
+import com.compass.productstorage.entity.Product;
+import com.compass.productstorage.repository.ProductRepository;
+import com.compass.productstorage.services.ProductServiceImp;
 
 @RestController
 @RequestMapping("/product-storage")
@@ -27,30 +38,24 @@ public class ProductController {
 	@Autowired
 	ProductRepository productRepository;
 
-	final ProductService productService;
+	final ProductServiceImp productService;
 
-	public ProductController(ProductService productService) {
+	public ProductController(ProductServiceImp productService) {
 		this.productService = productService;
 	}
 
-
+	// CREATE PRODUCT
 	@PostMapping
 	@Transactional
-	public ResponseEntity<ProductDto> registerProduct(@RequestBody @Valid ProductForm form,
-			UriComponentsBuilder uriBuilder) {
-		Product product = form.converter(productRepository);
-		productRepository.save(product);
-		URI uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
-		return ResponseEntity.created(uri).body(new ProductDto(product));
-	}
+	public ResponseEntity<Object> create(@RequestBody ProductForm form) {
+		var product = new Product();
+		BeanUtils.copyProperties(form, product); //converting a Form to Entity
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
+    }
 
-	@GetMapping
-	public List<ProductDto> list() {
-		return productService.list();
-	}
-
+	// SELECT BY ID
 	@GetMapping("/{id}")
-	public ResponseEntity<ProductDto> detalhar(@PathVariable int id) {
+	public ResponseEntity<ProductDto> findById(@PathVariable int id) {
 		Optional<Product> productOptional = productService.findById(id);
 		if (!productOptional.isPresent()) {
 			return ResponseEntity.notFound().build();
@@ -58,8 +63,9 @@ public class ProductController {
 		return ResponseEntity.ok(new ProductDto(productOptional.get()));
 	}
 
+	// DELETE BY ID
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteParkingSpot(@PathVariable int id) {
+	public ResponseEntity<Object> delete(@PathVariable int id) {
 		Optional<Product> productDtoOptional = productService.findById(id);
 
 		if (!productDtoOptional.isPresent()) {
@@ -70,19 +76,31 @@ public class ProductController {
 
 	}
 
+	// UPDATE BY ID
 	@PutMapping("/{id}")
-	@Transactional // comando pra salvar no banco de dados as novas info
-	public ResponseEntity<ProductDto> atualizar(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
+	@Transactional
+	public ResponseEntity<Product> update(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
 		Optional<Product> optional = productRepository.findById(id);
 		if (optional.isPresent()) {
-			Product product = form.update(id, productRepository);
+			Product product = form.updateForm(id, productRepository);
 			return ResponseEntity.ok(new ProductDto(product));
 		}
 		return ResponseEntity.notFound().build();
 	}
 
-//	@GetMapping
-//    public ResponseEntity<Page<Product>> getAllProducts(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
-//        return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(pageable));
-//    }
+	// SELECT ALL
+	@GetMapping
+	public Page<ProductDto> list(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+		Page<Product> products = productService.list(pageable);
+		return ProductDto.convertToPage(products);
+	}
+
+	// SEARCH
+	@GetMapping("/search")
+	public List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
+			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q) {
+		return productService.search(maxPricedb, minPricedb, q);
+	}
+
 }
