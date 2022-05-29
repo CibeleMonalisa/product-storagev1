@@ -3,19 +3,14 @@ package com.compass.productstorage.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotBlank;
-
 import org.springframework.data.domain.Page;
 
 import com.compass.productstorage.entity.Product;
 
 public class ProductDto extends Product {
-	@NotBlank
 	private int id;
-	@NotBlank
 	private String name;
 	private String description;
-	@NotBlank
 	private double price;
 
 	public ProductDto(Product product) {
@@ -47,10 +42,10 @@ public class ProductDto extends Product {
 	public static List<ProductDto> convertToList(List<Product> products) {
 		return products.stream().map(ProductDto::new).collect(Collectors.toList());
 
-		}
-	
-	public static Page<ProductDto> convertToPage(Page<Product> products){
+	}
+
+	public static Page<ProductDto> convertToPage(Page<Product> products) {
 		return products.map(ProductDto::new);
-		}
+	}
 
 }

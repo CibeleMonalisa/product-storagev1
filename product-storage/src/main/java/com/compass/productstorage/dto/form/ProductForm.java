@@ -1,12 +1,16 @@
-package com.compass.productstorage.Form;
+package com.compass.productstorage.dto.form;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.compass.productstorage.entity.Product;
 import com.compass.productstorage.repository.ProductRepository;
 
 public class ProductForm {
-
+	@NotNull @NotEmpty
     private String name;
     private String description;
+    @NotNull
     private double price;
 
     public String getName() {

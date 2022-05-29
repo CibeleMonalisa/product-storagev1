@@ -27,7 +27,7 @@ public class ProductServiceImp implements ProductService {
 		return productRepository.save(product);
 	}
 
-	// SELECT BY ID
+	// GET BY ID
 	@Override
 	public Optional<Product> findById(int id) {
 		return productRepository.findById(id);
@@ -35,15 +35,20 @@ public class ProductServiceImp implements ProductService {
 
 	// DELETE BY ID
 	@Override
-	public void delete(Product productDto) {
-		productRepository.delete(productDto);
+	public void delete(Product product) {
+		productRepository.delete(product);
 
 	}
 
-	// SELECT ALL
+	// GET ALL
 	@Override
 	public Page<Product> list(Pageable pageable) {
 		return productRepository.findAll(pageable);
+	}
+
+	// UPDATE GET ProductRepository
+	public ProductRepository getProductRepository(Product product) {
+		return productRepository;
 	}
 
 	// SEARCH

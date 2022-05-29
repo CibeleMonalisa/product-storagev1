@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,20 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.compass.productstorage.Form.ProductForm;
-import com.compass.productstorage.Form.ProductUpdateForm;
 import com.compass.productstorage.dto.ProductDto;
+import com.compass.productstorage.dto.form.ProductForm;
+import com.compass.productstorage.dto.form.ProductUpdateForm;
 import com.compass.productstorage.entity.Product;
-import com.compass.productstorage.repository.ProductRepository;
 import com.compass.productstorage.services.ProductServiceImp;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-
-	@Autowired
-	ProductRepository productRepository;
-
 	final ProductServiceImp productService;
 
 	public ProductController(ProductServiceImp productService) {
@@ -47,7 +41,7 @@ public class ProductController {
 	// CREATE PRODUCT
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Object> create(@RequestBody ProductForm form) {
+	public ResponseEntity<Object> create(@RequestBody @Valid ProductForm form) {
 		var product = new Product();
 		BeanUtils.copyProperties(form, product); // converting a Form to Entity
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
@@ -72,11 +66,12 @@ public class ProductController {
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
-			productService.findById(id);
-			var product = new Product();
-			BeanUtils.copyProperties(form, product);
-			product = form.updateForm(id, productRepository);
-			return ResponseEntity.ok(new ProductDto(product));
+		productService.findById(id);
+		var product = new Product();
+		BeanUtils.copyProperties(form, product);
+		var aux = productService.getProductRepository(product);
+		product = form.updateForm(id, aux);
+		return ResponseEntity.ok(new ProductDto(product));
 	}
 
 	// SELECT ALL
