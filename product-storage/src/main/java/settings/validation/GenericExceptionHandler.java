@@ -1,9 +1,8 @@
-package com.compass.productstorage.validation;
+package settings.validation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -17,11 +16,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GenericExceptionHandler extends RuntimeException {
-	
+
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired 
-	private MessageSource messageSource;
+	final MessageSource messageSource;
+	
+	public GenericExceptionHandler(MessageSource messageSource) {
+		super();
+		this.messageSource = messageSource;
+	}
 
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
@@ -37,32 +40,16 @@ public class GenericExceptionHandler extends RuntimeException {
 				HttpStatus.NOT_FOUND);
 	}
 
-//	protected ResponseEntity<Object> argumentNotValidHandler(MethodArgumentNotValidException exception,
-//			HttpHeaders httpHeaders, HttpStatus httpStatus, WebRequest webRequest) {
-//		List<String> description = new ArrayList<>();
-//		for (ObjectError error : exception.getBindingResult().getAllErrors()) {
-//			description.add(error.getDefaultMessage());
-//		}
-//
-//		ExceptionDto dto = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), String.join("\n", description));
-//		return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
-//	}
-
-
-	
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public List<ExceptionDto> handle(MethodArgumentNotValidException exception) {
+	public List<ExceptionDto> methodArgumentNotValidExceptionHandle(MethodArgumentNotValidException exception) {
 		List<ExceptionDto> dto = new ArrayList<>();
-		
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		fieldErrors.forEach(e -> {
 			String message = messageSource.getMessage(e, LocaleContextHolder.getLocale());
-			ExceptionDto error = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), e.getField(), message);
+			ExceptionDto error = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), message);
 			dto.add(error);
 		});
 		return dto;
 	}	
-
 }
-

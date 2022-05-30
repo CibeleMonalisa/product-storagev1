@@ -1,9 +1,9 @@
-package com.compass.productstorage.validation;
+package settings.validation;
 
 public class ExceptionDto {
 	private int status_code;
 	private String message;
-	private String field;
+//	private String field;
 	
 
 	public ExceptionDto(int status_code, String message) {
@@ -12,12 +12,12 @@ public class ExceptionDto {
 	}
 	
 
-	public ExceptionDto(int status_code, String message, String field) {
-		super();
-		this.status_code = status_code;
-		this.message = message;
-		this.field = field;
-	}
+//	public ExceptionDto(int status_code, String message, String field) {
+//		super();
+//		this.status_code = status_code;
+//		this.message = message;
+//		this.field = field;
+//	}
 
 
 
@@ -29,9 +29,9 @@ public class ExceptionDto {
 		return message;
 	}
 	
-	public String getField() {
-		return field;
-	}
+//	public String getField() {
+//		return field;
+//	}
 
 	
 	
