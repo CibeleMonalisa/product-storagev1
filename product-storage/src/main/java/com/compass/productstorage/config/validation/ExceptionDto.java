@@ -1,4 +1,4 @@
-package com.compass.productstorage.settings.validation;
+package com.compass.productstorage.config.validation;
 
 public class ExceptionDto {
 	private int status_code;

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,11 @@ import com.compass.productstorage.dto.form.ProductUpdateForm;
 import com.compass.productstorage.entity.Product;
 import com.compass.productstorage.services.ProductServiceImp;
 
+import io.swagger.annotations.Api;
+
+@CrossOrigin(origins="*")
 @RestController
+@Api(value = "Controller Products")
 @RequestMapping("/products")
 public class ProductController {
 	final ProductServiceImp productService;
