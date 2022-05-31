@@ -38,8 +38,8 @@ public class ProductUpdateForm {
 	}
 
 	public Product updateForm(int id, ProductRepository productRepository) {
-		Product product = productRepository.getById(id); // getById() caiu em desuso, substituição por
-																	// getReferenceById()
+		Product product = productRepository.getById(id);
+																	
 		product.setDescription(this.description);
 		product.setName(this.name);
 		product.setPrice(this.price);
