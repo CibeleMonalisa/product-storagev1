@@ -1,5 +1,6 @@
 package com.compass.productstorage.dto.form;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -10,7 +11,8 @@ public class ProductForm {
 	@NotNull @NotEmpty
     private String name;
     private String description;
-    @NotNull
+    @NotNull 
+    @DecimalMin(value ="0.01" ,message = "")
     private double price;
 
     public String getName() {

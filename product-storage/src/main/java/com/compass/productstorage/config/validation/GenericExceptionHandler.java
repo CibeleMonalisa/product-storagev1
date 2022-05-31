@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,17 +38,17 @@ public class GenericExceptionHandler extends RuntimeException {
 		return new ResponseEntity<>(new ExceptionDto(HttpStatus.NOT_FOUND.value(), "The record was not found"),
 				HttpStatus.NOT_FOUND);
 	}
-
+	
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ExceptionDto> methodArgumentNotValidExceptionHandle(MethodArgumentNotValidException exception) {
 		List<ExceptionDto> dto = new ArrayList<>();
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		fieldErrors.forEach(e -> {
-			String message = messageSource.getMessage(e, LocaleContextHolder.getLocale());
-			ExceptionDto error = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), message);
+			ExceptionDto error = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), "Must not be empty or null");
 			dto.add(error);
 		});
 		return dto;
 	}	
+	
 }
