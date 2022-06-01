@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .version("1.0.0")
                 .contact(new Contact("Cibele Monalisa de Almeida Silva",
-                		"cibele.silva.pb@compasso.com.br", "https://github.com/CibeleMonalisa/product-storagev1.git"))
+                		"https://github.com/CibeleMonalisa/product-storagev1.git", "cibele.silva.pb@compasso.com.br"))
                 .build();
 
         return apiInfo;
