@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.compass.productstorage.dto.ExceptionDto;
 import com.compass.productstorage.dto.ProductDto;
 import com.compass.productstorage.dto.form.ProductForm;
 import com.compass.productstorage.dto.form.ProductUpdateForm;
@@ -33,8 +32,6 @@ import com.compass.productstorage.services.ProductServiceImp;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/products")
@@ -53,10 +50,6 @@ public class ProductController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value="Insert a product")
-	@ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = ExceptionDto.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = ExceptionDto.class),
-    })
 	public ResponseEntity<Object> create(@RequestBody @Valid ProductForm form) {
 		var product = new Product();
 		BeanUtils.copyProperties(form, product); // converting a Form to Entity
