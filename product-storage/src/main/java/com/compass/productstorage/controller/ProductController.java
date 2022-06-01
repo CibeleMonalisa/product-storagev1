@@ -36,10 +36,10 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/products")
 @Api(value = "Controller Products")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 
 public class ProductController {
-	
+
 	final ProductServiceImp productService;
 
 	public ProductController(ProductServiceImp productService) {
@@ -49,7 +49,7 @@ public class ProductController {
 	// CREATE PRODUCT
 	@PostMapping
 	@Transactional
-	@ApiOperation(value="Insert a product")
+	@ApiOperation(value = "Insert a product")
 	public ResponseEntity<Object> create(@RequestBody @Valid ProductForm form) {
 		var product = new Product();
 		BeanUtils.copyProperties(form, product); // converting a Form to Entity
@@ -58,7 +58,7 @@ public class ProductController {
 
 	// GET BY ID
 	@GetMapping("/{id}")
-	@ApiOperation(value="Search a product by id")
+	@ApiOperation(value = "Search a product by id")
 	public ResponseEntity<ProductDto> findById(@PathVariable int id) {
 		Optional<Product> productOptional = productService.findById(id);
 		return ResponseEntity.ok(new ProductDto(productOptional.get()));
@@ -66,7 +66,7 @@ public class ProductController {
 
 	// DELETE BY ID
 	@DeleteMapping("/{id}")
-	@ApiOperation(value="Delete a product by id")
+	@ApiOperation(value = "Delete a product by id")
 	public ResponseEntity<Object> delete(@PathVariable int id) {
 		Optional<Product> productDtoOptional = productService.findById(id);
 		productService.delete(productDtoOptional.get());
@@ -76,7 +76,7 @@ public class ProductController {
 	// UPDATE BY ID
 	@PutMapping("/{id}")
 	@Transactional
-	@ApiOperation(value="Update a product by id")
+	@ApiOperation(value = "Update a product by id")
 	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody @Valid ProductUpdateForm form) {
 		productService.findById(id);
 		var product = new Product();
@@ -88,7 +88,7 @@ public class ProductController {
 
 	// SELECT ALL
 	@GetMapping
-	@ApiOperation(value="Returns a list of products")
+	@ApiOperation(value = "Returns a list of products")
 	public Page<ProductDto> list(
 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<Product> products = productService.list(pageable);
@@ -97,9 +97,8 @@ public class ProductController {
 
 	// SEARCH
 	@GetMapping("/search")
-	@ApiOperation(value="Returns a search by minimum and maximum price and product name")
-	public List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
-			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q) {
-		return productService.search(maxPricedb, minPricedb, q);
+	public List<ProductDto> search(@RequestParam(required = false) Double max_price,
+			@RequestParam(required = false) Double min_price, @RequestParam(required = false) String q) {
+		return productService.search(max_price, min_price, q);
 	}
 }

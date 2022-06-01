@@ -28,6 +28,6 @@ public interface ProductService {
 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
 
 	// SEARCH METHOD
-	List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
-			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q);
+	List<ProductDto> search(@RequestParam(required = false) Double max_price,
+			@RequestParam(required = false) Double min_price, @RequestParam(required = false) String q);
 }

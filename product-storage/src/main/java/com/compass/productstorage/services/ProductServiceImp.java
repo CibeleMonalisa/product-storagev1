@@ -53,10 +53,10 @@ public class ProductServiceImp implements ProductService {
 
 	// SEARCH
 	@Override
-	public List<ProductDto> search(@RequestParam(required = false) Double maxPricedb,
-			@RequestParam(required = false) Double minPricedb, @RequestParam(required = false) String q) {
-		List<Product> product = productRepository.findByPrice(maxPricedb, minPricedb, q);
+	public List<ProductDto> search(@RequestParam(required = false) Double max_price,
+			@RequestParam(required = false) Double min_price, @RequestParam(required = false) String q) {
+		List<Product> product = productRepository.findByPrice(max_price, min_price, q);
 		return ProductDto.convertToList(product);
-	}
+	}	 
 
 }
