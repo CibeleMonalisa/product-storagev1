@@ -70,7 +70,7 @@ public class ProductController {
 	public ResponseEntity<Object> delete(@PathVariable int id) {
 		Optional<Product> productDtoOptional = productService.findById(id);
 		productService.delete(productDtoOptional.get());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product successfully deleted");
+		return ResponseEntity.status(HttpStatus.ok).body("Product successfully deleted");
 	}
 
 	// UPDATE BY ID
